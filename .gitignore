@@ -1,0 +1,13 @@
+*.pt
+*.npy
+*.pyc
+*.pth
+*.pkl
+__pycache__
+data
+debug
+emotion_gan
+pretrained_models
+saved_models
+samples
+results

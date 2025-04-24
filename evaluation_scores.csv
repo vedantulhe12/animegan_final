@@ -1,0 +1,11 @@
+Metric,Score
+LPIPS Original vs Emotion,0.19049745680470215
+LPIPS Emotion vs Anime,0.1853802364123495
+LPIPS Original vs Anime,0.3005851679726651
+Inception Score,2.6724
+SSIM Original vs Emotion,0.5343
+SSIM Emotion vs Anime,0.6843
+SSIM Original vs Anime,0.4624
+PSNR Original vs Emotion,19.2873
+PSNR Emotion vs Anime,18.9537
+PSNR Original vs Anime,16.1684
