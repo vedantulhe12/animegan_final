@@ -15,8 +15,8 @@ import datetime
 # -------------------------------
 E4E_CHECKPOINT = r"pretrained_models/e4e_ffhq_encode.pt"
 ANIMEGAN_CHECKPOINT = r"weights/paprika.pt"
-BOUNDARY_PATH = r"boundaries/boundary_happy.npy"
-INPUT_IMAGE = r"C:/Users/Vedant/Desktop/animegan2-pytorch/data/original_faces/69887.png"
+BOUNDARY_PATH = r"boundaries\pggan_celebahq_age_boundary.npy"
+INPUT_IMAGE = r"C:/Users/Vedant/Desktop/animegan2-pytorch/data/original_faces/6999.png"
 INTENSITY = 1.0
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -118,4 +118,6 @@ with torch.no_grad():
 # Save Output
 # -------------------------------
 anime_pil.save(OUTPUT_PATH)
-print(f"✅ Saved stylized image with emotion at: {OUTPUT_PATH}")
+print(f"Saved stylized image with emotion at: {OUTPUT_PATH}")
+
+

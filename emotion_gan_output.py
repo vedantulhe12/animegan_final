@@ -26,7 +26,7 @@ os.makedirs(output_dir, exist_ok=True)
 # -------------------------------
 # Load e4e model
 # -------------------------------
-print("🔄 Loading e4e encoder...")
+print(" Loading e4e encoder...")
 opts = Namespace(
     checkpoint_path=E4E_CHECKPOINT,
     device=DEVICE,
@@ -51,15 +51,13 @@ opts = Namespace(
 )
 encoder = pSp(opts).to(DEVICE).eval()
 
-# -------------------------------
 # Process All Images in Input Directory
-# -------------------------------
-print(f"🔄 Processing images in {INPUT_DIR}...")
+print(f" Processing images in {INPUT_DIR}...")
 
 for filename in os.listdir(INPUT_DIR):
     if filename.endswith(".png") or filename.endswith(".jpg"):
         input_image_path = os.path.join(INPUT_DIR, filename)
-        print(f"🖼️ Processing image: {input_image_path}")
+        print(f" Processing image: {input_image_path}")
 
         # Preprocess Input Image
         image = Image.open(input_image_path).convert("RGB")
@@ -90,6 +88,6 @@ for filename in os.listdir(INPUT_DIR):
         base_filename = os.path.splitext(filename)[0]  # Get the filename without extension
         emotion_img_path = os.path.join(output_dir, f"{base_filename}.png")  # Save with just the number
         edited_image.save(emotion_img_path)
-        print(f"📸 Saved emotion-edited image: {emotion_img_path}")
+        print(f" Saved emotion-edited image: {emotion_img_path}")
 
-print("✅ All emotion-edited images have been processed and saved.")
+print(" All emotion-edited images have been processed and saved.")

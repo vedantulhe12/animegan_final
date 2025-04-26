@@ -22,7 +22,7 @@ AU_INDEX = {
 }
 
 # === Setup paths ===
-input_image_path = r"C:\Users\Vedant\Desktop\animegan2-pytorch\inputs images\7acb0a06072b15d99b3989f7df009146_69999.png"  # path to frontal face
+input_image_path = r"data/original_faces/69887.png"  # path to frontal face
 output_image_path = r"emotion_output.png"
 emotion = "happy"
 intensity = 1.0

@@ -60,12 +60,12 @@ transform = transforms.Compose([
 
 # ------------------- MAIN LOOP -------------------
 cap = cv2.VideoCapture(0)
-print("🎥 Webcam started. Press 'q' to quit.")
+print(" Webcam started. Press 'q' to quit.")
 
 while True:
     ret, frame = cap.read()
     if not ret:
-        print("❌ Failed to capture frame.")
+        print(" Failed to capture frame.")
         break
 
     # Convert OpenCV BGR to PIL RGB
@@ -76,37 +76,26 @@ while True:
     img_tensor = transform(pil_img).unsqueeze(0).to(DEVICE)
 
     with torch.no_grad():
-        # Encode to latent
+        # Encode to latent (no manipulation)
         _, latent = encoder(img_tensor, return_latents=True)
 
-        # Manipulate latent
-        for i in range(4, 9):
-            latent[:, i, :] += EMOTION_INTENSITY * boundary
-
-        # Decode image from latent
+        # Decode directly (no boundary)
         generated, _ = encoder.decoder([latent], input_is_latent=True, randomize_noise=False)
         generated = encoder.face_pool(generated)
-        edited_img = tensor2im(generated[0])
-        edited_pil = edited_img.resize((RESIZE, RESIZE), Image.LANCZOS)
+        reconstructed_img = tensor2im(generated[0])
+        reconstructed_pil = reconstructed_img.resize((RESIZE, RESIZE), Image.LANCZOS)
 
-        # Stylize with AnimeGAN
-        face_tensor = to_tensor(edited_pil).unsqueeze(0).to(DEVICE) * 2 - 1
-        anime_out = animegan(face_tensor).cpu().squeeze(0).clamp(-1, 1)
-        anime_out = anime_out * 0.5 + 0.5
-        anime_pil = to_pil_image(anime_out)
-
-    # Display all images side-by-side
+    # Display original and reconstructed
     display = np.hstack([
         cv2.resize(frame, (RESIZE, RESIZE)),
-        cv2.cvtColor(np.array(edited_pil), cv2.COLOR_RGB2BGR),
-        cv2.cvtColor(np.array(anime_pil.resize((RESIZE, RESIZE))), cv2.COLOR_RGB2BGR)
+        cv2.cvtColor(np.array(reconstructed_pil), cv2.COLOR_RGB2BGR)
     ])
 
-    cv2.imshow("🧠 Original | ✨ Edited | 🎌 Anime", display)
+    cv2.imshow(" Original | 🔁 Reconstructed", display)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 cap.release()
 cv2.destroyAllWindows()
-print("👋 Exited cleanly.")
+print("Exited cleanly.")
