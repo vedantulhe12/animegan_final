@@ -44,7 +44,7 @@ A full-stack AI-based web application that transforms real human portraits into 
 
 | Emotion | Intensity | Original | Emotion-Edited | Anime-Stylized |
 |--------|-----------|----------|----------------|----------------|
-| Happy  | 10        | ![](samples/happy_input.png) | ![](samples/happy_emotion.png) | ![](samples/happy_anime.png) |
+| Happy  | 10        | ![]("github readme\WhatsApp Image 2025-07-29 at 21.19.01_9d79bc5f.jpg") | ![](samples/happy_emotion.png) | ![](samples/happy_anime.png) |
 | Disgust| 10        | ![](samples/disgust_input.png) | ![](samples/disgust_emotion.png) | ![](samples/disgust_anime.png) |
 
 ## Getting Started
