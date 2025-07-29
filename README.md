@@ -44,7 +44,7 @@ A full-stack AI-based web application that transforms real human portraits into 
 
 | Emotion | Intensity | Original | Emotion-Edited | Anime-Stylized |
 |--------|-----------|----------|----------------|----------------|
-| Happy  | 10        | ![Preview](github_readme/og1) | ![](samples/happy_emotion.png) | ![](samples/happy_anime.png) |
+| Happy  | 10        | ![Preview](github_readme/og1.jpg) | ![](samples/happy_emotion.png) | ![](samples/happy_anime.png) |
 | Disgust| 10        | ![](samples/disgust_input.png) | ![](samples/disgust_emotion.png) | ![](samples/disgust_anime.png) |
 
 ## Getting Started
