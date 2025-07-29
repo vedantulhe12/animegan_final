@@ -1,129 +1,111 @@
-## PyTorch Implementation of [AnimeGANv2](https://github.com/TachibanaYoshino/AnimeGANv2)
+# Anime Style Portrait Generator 🎭✨
 
+A full-stack AI-based web application that transforms real human portraits into anime-style images while allowing **emotion manipulation** such as smiling, sadness, or anger — using **Generative Adversarial Networks (GANs)**.
 
-**Updates**
+## 🚀 Features
 
-* `2021-10-17` Add weights for [FacePortraitV2](#additional-model-weights). [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/bryandlee/animegan2-pytorch/blob/main/colab_demo.ipynb)
+- Real-time image-to-anime conversion
+- Emotion-aware facial edits (happy, sad, disgust, etc.)
+- Latent editing with e4e encoder in StyleGAN2’s W+ space
+- Stylization using AnimeGANv2
+- Web-based UI (React + Chakra UI) with Flask backend
+- Optionally deployable on Telegram bot
 
-    ![sample](https://user-images.githubusercontent.com/26464535/142294796-54394a4a-a566-47a1-b9ab-4e715b901442.gif)
+## 📦 Dataset
 
-* `2021-11-07` Thanks to [ak92501](https://twitter.com/ak92501), a [web demo](https://huggingface.co/spaces/akhaliq/AnimeGANv2) is integrated to [Huggingface Spaces](https://huggingface.co/spaces) with [Gradio](https://github.com/gradio-app/gradio). [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/akhaliq/AnimeGANv2)
+- **FFHQ (Flickr-Faces-HQ)** - 70,000 aligned high-res face images (1024x1024)
+- Preprocessing: center-cropping, resizing to 256x256, MediaPipe face mesh alignment
+- Pseudo-labeled emotions for boundary vector generation
 
-* `2021-11-07` Thanks to [xhlulu](https://github.com/xhlulu), the `torch.hub` model is now available. See [Torch Hub Usage](#torch-hub-usage).
- 
- 
-## Basic Usage
+## 🧠 Architecture
 
-**Inference**
-```
-python test.py --input_dir [image_folder_path] --device [cpu/cuda]
-```
+1. **Encoding**: Image encoded to W+ space using e4e
+2. **Emotion Manipulation**: Add scaled emotion vectors (e.g., smile, anger)
+3. **Decoding**: StyleGAN2 reconstructs edited photo
+4. **Stylization**: AnimeGANv2 converts it into anime-style portrait
 
+## 🏋️ Model Training
 
-## Torch Hub Usage
+- Emotion boundaries precomputed from classifiers
+- AnimeGANv2 pretrained on real→anime image pairs
+- Fine-tuning with adversarial, style, content, and total variation losses
+- Trained on RTX 3090 with 8GB VRAM
 
-You can load the model via `torch.hub`:
+## 📈 Evaluation Metrics
 
-```python
-import torch
-model = torch.hub.load("bryandlee/animegan2-pytorch", "generator").eval()
-out = model(img_tensor)  # BCHW tensor
-```
+| Metric | Original ↔ Emotion | Emotion ↔ Anime | Original ↔ Anime |
+|--------|--------------------|------------------|------------------|
+| LPIPS  | 0.1905             | 0.1854           | 0.3006           |
+| SSIM   | 0.5343             | 0.6843           | 0.4624           |
+| PSNR   | 19.2873            | 18.9537          | 16.1684          |
+| IS     | —                  | 2.6724           | —                |
 
-Currently, the following `pretrained` shorthands are available:
-```python
-model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="celeba_distill")
-model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="face_paint_512_v1")
-model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="face_paint_512_v2")
-model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="paprika")
-```
+## 🖼️ Sample Outputs
 
-You can also load the `face2paint` util function:
-```python
-from PIL import Image
+| Emotion | Intensity | Original | Emotion-Edited | Anime-Stylized |
+|--------|-----------|----------|----------------|----------------|
+| Happy  | 10        | ![](samples/happy_input.png) | ![](samples/happy_emotion.png) | ![](samples/happy_anime.png) |
+| Disgust| 10        | ![](samples/disgust_input.png) | ![](samples/disgust_emotion.png) | ![](samples/disgust_anime.png) |
 
-face2paint = torch.hub.load("bryandlee/animegan2-pytorch:main", "face2paint", size=512)
+## 💻 Getting Started
 
-img = Image.open(...).convert("RGB")
-out = face2paint(model, img)
-```
-More details about `torch.hub` is in [the torch docs](https://pytorch.org/docs/stable/hub.html)
+### Clone & Install
 
-
-## Weight Conversion from the Original Repo (Tensorflow)
-1. Install the [original repo's dependencies](https://github.com/TachibanaYoshino/AnimeGANv2#requirements): python 3.6, tensorflow 1.15.0-gpu
-2. Install torch >= 1.7.1
-3. Clone the original repo & run
-```
-git clone https://github.com/TachibanaYoshino/AnimeGANv2
-python convert_weights.py
+```bash
+git clone https://github.com/vedantulhe12/animegan_final.git
+cd animegan_final
+pip install -r requirements.txt
 ```
 
-<details>
-<summary>samples</summary>
+### Run Backend
 
-<br>
-Results from converted `Paprika` style model (input image, original tensorflow result, pytorch result from left to right)
+```bash
+cd backend
+python app.py
+```
 
-<img src="./samples/compare/1.jpg" width="960"> &nbsp; 
-<img src="./samples/compare/2.jpg" width="960"> &nbsp; 
-<img src="./samples/compare/3.jpg" width="960"> &nbsp; 
-   
-</details>
- 
-**Note:** Results from converted weights slightly different due to the [bilinear upsample issue](https://github.com/pytorch/pytorch/issues/10604)
+### Run Frontend
 
+```bash
+cd frontend
+npm install
+npm start
+```
 
-## Additional Model Weights
+## 🌍 Applications
 
-**Webtoon Face** [[ckpt]](https://drive.google.com/file/d/10T6F3-_RFOCJn6lMb-6mRmcISuYWJXGc)
+- 🎮 Game avatars with custom expressions
+- 📱 Social media filters and AI stickers
+- 🎨 Artist tools and character generation
+- 🧠 Mental health therapy avatars
+- 🧑‍🏫 Anime content creation for comics/courses
 
-<details>
-<summary>samples</summary>
+## ⚠️ Limitations
 
-Trained on <b>256x256</b> face images. Distilled from [webtoon face model](https://github.com/bryandlee/naver-webtoon-faces/blob/master/README.md#face2webtoon) with L2 + VGG + GAN Loss and CelebA-HQ images.
+- May produce artifacts with extreme edits
+- Subtle emotions may get lost during stylization
+- Ethical risks: identity spoofing, deepfakes
+- Dataset biases possible
 
-![face_results](https://user-images.githubusercontent.com/26464535/143959011-1740d4d3-790b-4c4c-b875-24404ef9c614.jpg) &nbsp; 
-  
-</details>
+## ✅ Ethical Guidelines
 
+- Watermark outputs
+- Require consent for image inputs
+- Inform users about risks of emotional manipulation
 
-**Face Portrait v1** [[ckpt]](https://drive.google.com/file/d/1WK5Mdt6mwlcsqCZMHkCUSDJxN1UyFi0-)
+## 👨‍💻 Authors
 
-<details>
-<summary>samples</summary>
+- Vedant Ulhe (22070126123)  
+- Rishith Singh Rawat (22070126088)  
+- Samarth Patel (22070126098)  
+- Sameer Khatwani (22070126099)  
 
-Trained on <b>512x512</b> face images.
+## 📚 References
 
-[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1jCqcKekdtKzW7cxiw_bjbbfLsPh-dEds?usp=sharing)
-  
-![samples](https://user-images.githubusercontent.com/26464535/127134790-93595da2-4f8b-4aca-a9d7-98699c5e6914.jpg)
+- [AnimeGANv2](https://github.com/TachibanaYoshino/AnimeGANv2)
+- [StyleGAN2](https://github.com/NVlabs/stylegan2)
+- [e4e: Encoder for Editing](https://github.com/omertov/encoder4editing)
 
-[📺](https://youtu.be/CbMfI-HNCzw?t=317)
-  
-![sample](https://user-images.githubusercontent.com/26464535/129888683-98bb6283-7bb8-4d1a-a04a-e795f5858dcf.gif)
+## 📜 License
 
-</details>
-
-
-**Face Portrait v2** [[ckpt]](https://drive.google.com/uc?id=18H3iK09_d54qEDoWIc82SyWB2xun4gjU)
-
-<details>
-<summary>samples</summary>
-
-Trained on <b>512x512</b> face images. Compared to v1, `🔻beautify` `🔺robustness` 
-
-[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1jCqcKekdtKzW7cxiw_bjbbfLsPh-dEds?usp=sharing)
-  
-![face_portrait_v2_0](https://user-images.githubusercontent.com/26464535/137619176-59620b59-4e20-4d98-9559-a424f86b7f24.jpg)
-
-![face_portrait_v2_1](https://user-images.githubusercontent.com/26464535/137619181-a45c9230-f5e7-4f3c-8002-7c266f89de45.jpg)
-
-🦑 🎮 🔥
-  
-![face_portrait_v2_squid_game](https://user-images.githubusercontent.com/26464535/137619183-20e94f11-7a8e-4c3e-9b45-378ab63827ca.jpg)
-
-
-</details>
-
-
+MIT License
