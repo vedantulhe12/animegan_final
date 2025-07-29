@@ -44,8 +44,8 @@ A full-stack AI-based web application that transforms real human portraits into 
 
 | Emotion | Intensity | Original | Emotion-Edited | Anime-Stylized |
 |--------|-----------|----------|----------------|----------------|
-| Happy  | 10        | ![Preview](https://github.com/vedantulhe12/animegan_final/blob/main/github_images/og1.jpg) | ![](samples/happy_emotion.png) | ![](samples/happy_anime.png) |
-| Disgust| 10        | ![](samples/disgust_input.png) | ![](samples/disgust_emotion.png) | ![](samples/disgust_anime.png) |
+| Happy  | 10        | <img src="https://raw.githubusercontent.com/vedantulhe12/animegan_final/main/github_images/og1.jpg" width="250"/> | <img src="https://raw.githubusercontent.com/vedantulhe12/animegan_final/main/github_images/emotion_happy.jpg" width="250"/> | <img src="https://raw.githubusercontent.com/vedantulhe12/animegan_final/main/github_images/animegan_happy.jpg" width="250"/> |
+| Sad | 10 | <img src="https://raw.githubusercontent.com/vedantulhe12/animegan_final/main/github_images/og2.jpg" width="250"/> | <img src="https://raw.githubusercontent.com/vedantulhe12/animegan_final/main/github_images/og2_sad10.jpg" width="250"/> | <img src="https://raw.githubusercontent.com/vedantulhe12/animegan_final/main/github_images/og2_sad10_animegan.jpg" width="250"/> |
 
 ## Getting Started
 
@@ -72,7 +72,7 @@ npm install
 npm start
 ```
 
-## 🌍 Applications
+## Applications
 
 - 🎮 Game avatars with custom expressions
 - 📱 Social media filters and AI stickers
@@ -108,4 +108,5 @@ npm start
 
 ## License
 
-MIT License
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
